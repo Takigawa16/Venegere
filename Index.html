@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigenère Cipher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vigenère Cipher</h1>
+        <label for="scrambled">Scrambled Text:</label>
+        <input type="text" id="scrambled" placeholder="Enter scrambled text">
+
+        <label for="clue">Clue Word:</label>
+        <input type="text" id="clue" placeholder="Enter clue word">
+
+        <button onclick="decrypt()">Decrypt</button>
+
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        function decrypt() {
+            const scrambled = document.getElementById('scrambled').value.toUpperCase();
+            const clue = document.getElementById('clue').value.toUpperCase();
+            
+            if (!scrambled || !clue) {
+                document.getElementById('output').innerText = "Please enter both scrambled text and clue word.";
+                return;
+            }
+
+            let result = '';
+            let keyIndex = 0;
+
+            for (let i = 0; i < scrambled.length; i++) {
+                const char = scrambled[i];
+                if (char >= 'A' && char <= 'Z') {
+                    const shift = clue[keyIndex % clue.length].charCodeAt(0) - 'A'.charCodeAt(0);
+                    const decryptedChar = String.fromCharCode(((char.charCodeAt(0) - 'A'.charCodeAt(0) - shift + 26) % 26) + 'A'.charCodeAt(0));
+                    result += decryptedChar;
+                    keyIndex++;
+                } else {
+                    result += char; // Non-alphabetic characters remain unchanged
+                }
+            }
+
+            document.getElementById('output').innerHTML = `<strong>Decrypted Text:</strong> ${result}`;
+        }
+    </script>
+</body>
+</html>
